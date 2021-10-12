@@ -12,6 +12,11 @@ const userSchema = mongoose.Schema(
       required: [true, 'A user must have a email address'],
       unique: true,
     },
+    role: {
+      type: String,
+      enum: ['admin', 'user', 'tour-guide'],
+      default: 'user',
+    },
     password: {
       type: String,
       required: [true, 'A user must have a password'],
@@ -28,6 +33,7 @@ const userSchema = mongoose.Schema(
         message: 'Confirm password is not same',
       },
     },
+    passwordUpdated: Date,
   },
   {
     timestamps: true,
@@ -42,8 +48,21 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+//Fn to compare the hashed pass and user inputed pass
 userSchema.methods.correctPass = async function (candidatePass, userPass) {
   return await bcrypt.compare(candidatePass, userPass);
+};
+
+// Fn to check if the password is updated
+userSchema.methods.changedPass = function (JWTTimestamp) {
+  if (this.passwordUpdated) {
+    const newPassChangedTime = parseInt(
+      this.passwordUpdated.getTime() / 1000,
+      10
+    );
+    return JWTTimestamp < newPassChangedTime;
+  }
+  return false;
 };
 
 const User = mongoose.model('User', userSchema);
