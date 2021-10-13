@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+const crypto = require('crypto');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const sendEmail = require('../utils/sendEmail');
 
 // Registering new user
 exports.signup = catchAsync(async (req, res, next) => {
@@ -86,3 +88,77 @@ exports.restrictTo = function (...roles) {
     next();
   };
 };
+
+// Forgot password
+exports.forgotPass = catchAsync(async (req, res, next) => {
+  // Search for the user with the specified email
+  const user = await User.findOne({ email: req.body.email });
+  if (!user)
+    return next(
+      new AppError("User with specified email address doesn't exist", 404)
+    );
+
+  // Generate the random reset token
+  const token = await user.createResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  // Pass the reset token to client email
+  const link = `${req.protocol}://localhost:3000/reset/${token}`;
+  const sub = 'Reset Password Link';
+  const text = `Reset your password clicking on this link ${link} valid only for 10 min `;
+  sendEmail(user.email, sub, text);
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Reset Email sent successfully',
+  });
+});
+
+// Reseting the user pass
+exports.reset = catchAsync(async (req, res, next) => {
+  // hash the token and find the user having token not expired
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+  if (!user) return next(new AppError('The token is invalid or expired', 400));
+
+  // change passwordUpdated field and resetToken
+  user.password = req.body.password;
+  user.confirmPass = req.body.confirmPass;
+  user.passwordUpdated = Date.now();
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Password updated successfully.Please login to proceed',
+  });
+});
+
+// Updating current user password
+exports.update = catchAsync(async (req, res, next) => {
+  // get the user from the collecion
+  const user = await User.findById(req.user.id).select('+password');
+
+  //check if the current password is true
+  if (!(await user.correctPass(req.body.passCurrent, user.password))) {
+    return next(new AppError('Current user password is invalid', 401));
+  }
+
+  // if user exists update the password
+  user.password = req.body.password;
+  user.confirmPass = req.body.confirmPass;
+  user.passwordUpdated = Date.now();
+  await user.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Password Updated successfuly.',
+  });
+});
