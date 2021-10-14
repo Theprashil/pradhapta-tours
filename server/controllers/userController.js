@@ -37,3 +37,35 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     data: user,
   });
 });
+
+// Delete the user
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'User deleted successfully',
+  });
+});
+
+//Admin only actions
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const result = await User.find();
+
+  if (!result) return next(new AppError('No users found in the database', 400));
+
+  res.status(200).json({
+    status: 'success',
+    users: result,
+  });
+});
+
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return next(new AppError("User doesn't exist with given id", 400));
+
+  res.status(200).json({
+    status: 'success',
+    user,
+  });
+});

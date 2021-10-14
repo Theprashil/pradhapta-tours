@@ -36,6 +36,11 @@ const userSchema = mongoose.Schema({
   passwordUpdated: Date,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -43,6 +48,12 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
     this.confirmPass = undefined;
   }
+  next();
+});
+
+// shows users having only active status
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
   next();
 });
 

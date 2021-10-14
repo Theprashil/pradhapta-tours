@@ -8,7 +8,7 @@ const sendEmail = require('../utils/sendEmail');
 
 // Registering new user
 exports.signup = catchAsync(async (req, res, next) => {
-  const result = await User.create({
+  await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
@@ -17,7 +17,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: 'success',
-    user: result,
+    message: 'User created successfully',
   });
 });
 
@@ -83,7 +83,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.restrictTo = function (...roles) {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(new AppError('You are not authorized to delete it', 403));
+      return next(new AppError('You are not authorized', 403));
     }
     next();
   };
