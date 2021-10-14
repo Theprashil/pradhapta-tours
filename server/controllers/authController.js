@@ -142,7 +142,7 @@ exports.reset = catchAsync(async (req, res, next) => {
 });
 
 // Updating current user password
-exports.update = catchAsync(async (req, res, next) => {
+exports.updatePass = catchAsync(async (req, res, next) => {
   // get the user from the collecion
   const user = await User.findById(req.user.id).select('+password');
 
