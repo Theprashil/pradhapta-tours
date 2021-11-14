@@ -19,3 +19,10 @@ export const removeSelectedTour = (tour) => {
     type: ActionTypes.REMOVE_SELECTED_TOUR,
   };
 };
+
+export const addToCart = (tour) => {
+  return {
+    type: ActionTypes.ADD_TO_CART,
+    payload: tour,
+  };
+};

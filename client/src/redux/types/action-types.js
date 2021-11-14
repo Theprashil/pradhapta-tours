@@ -1,4 +1,4 @@
-export const ADD_TOURS = "ADD_TOURS";
+export const ADD_TO_CART = "ADD_TO_CART";
 export const SELECTED_TOUR = "SELECTED_TOUR";
 export const REMOVE_SELECTED_TOUR = "REMOVE_SELECTED_TOUR";
 export const CLEAR_CART = "CLEAR_CART";

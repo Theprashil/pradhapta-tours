@@ -9,6 +9,18 @@ export const tourReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ActionTypes.SET_TOURS_TO_STORE:
       return { ...state, tours: payload };
+    case ActionTypes.ADD_TO_CART:
+      const copy = [...state.carts];
+      const curItemIndex = copy.findIndex((i) => i.payload._id === payload._id);
+      if (curItemIndex < 0) {
+        copy.push({ payload, quantity: 1 });
+      } else {
+        const copyItem = { ...copy[curItemIndex] };
+        copyItem.quantity++;
+        copy[curItemIndex] = copyItem;
+      }
+
+      return { ...state, carts: copy };
     default:
       return state;
   }

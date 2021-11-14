@@ -5,18 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectedTour,
   removeSelectedTour,
+  addToCart,
 } from "../../redux/actions/tourActions";
 
 const TourDetail = () => {
   const dispatch = useDispatch();
   const tour = useSelector((state) => state.tour);
   const { image, name, difficulty, price, summary } = tour;
-  console.log(tour);
 
   const { tourID } = useParams();
   async function getTourDetail() {
     const res = await axios.get(`/tours/${tourID}`);
     dispatch(selectedTour(res.data.tour));
+    console.log(res.data.tour);
   }
 
   useEffect(() => {
@@ -26,6 +27,12 @@ const TourDetail = () => {
     };
   }, [tourID]);
 
+  const cartHandler = async () => {
+    const res = await axios.get(`/tours/${tourID}`);
+    dispatch(addToCart(res.data.tour));
+  };
+
+  //if you want to change individual tour detail change this...
   return (
     <div className="ui grid container">
       {Object.keys(tour).length === 0 ? (
@@ -46,7 +53,7 @@ const TourDetail = () => {
                 <h3 className="ui brown block header">{difficulty}</h3>
                 <p>{summary}</p>
                 <div className="ui vertical animated button" tabIndex="0">
-                  <div className="hidden content">
+                  <div onClick={cartHandler} className="hidden content">
                     <i className="shop icon"></i>
                   </div>
                   <div className="visible content">Add to Cart</div>
