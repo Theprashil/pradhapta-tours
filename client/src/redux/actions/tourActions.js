@@ -26,3 +26,16 @@ export const addToCart = (tour) => {
     payload: tour,
   };
 };
+
+export const removeFromCart = (tour) => {
+  return {
+    type: ActionTypes.REMOVE_FROM_CART,
+    payload: tour,
+  };
+};
+
+export const clearCart = () => {
+  return {
+    type: ActionTypes.CLEAR_CART,
+  };
+};

@@ -9,6 +9,7 @@ export const tourReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ActionTypes.SET_TOURS_TO_STORE:
       return { ...state, tours: payload };
+
     case ActionTypes.ADD_TO_CART:
       const copy = [...state.carts];
       const curItemIndex = copy.findIndex((i) => i.payload._id === payload._id);
@@ -19,8 +20,28 @@ export const tourReducer = (state = initialState, { type, payload }) => {
         copyItem.quantity++;
         copy[curItemIndex] = copyItem;
       }
-
       return { ...state, carts: copy };
+
+    case ActionTypes.REMOVE_FROM_CART:
+      const ncopy = [...state.carts];
+      const ncurItemIndex = ncopy.findIndex(
+        (i) => i.payload._id === payload._id
+      );
+      const ncurItem = { ...ncopy[ncurItemIndex] };
+      ncurItem.quantity--;
+      if (ncurItem.quantity <= 0) {
+        ncopy.splice(ncurItemIndex, 1);
+      } else {
+        ncopy[ncurItemIndex] = ncurItem;
+      }
+      return { ...state, carts: ncopy };
+
+    case ActionTypes.CLEAR_CART:
+      return {
+        ...state,
+        carts: [],
+      };
+
     default:
       return state;
   }
