@@ -1,15 +1,15 @@
-import { ActionTypes } from "./types/actionTypes";
+import * as ActionTypes from "../types/action-types";
 
-export const addTours = (tours) => {
+export const setToursToStore = (tours) => {
   return {
-    type: ActionTypes.ADD_TOURS,
+    type: ActionTypes.SET_TOURS_TO_STORE,
     payload: tours,
   };
 };
 
-export const selectedTour = (tourID) => {
+export const selectedTour = (tour) => {
   return {
     type: ActionTypes.SELECTED_TOUR,
-    payload: tourID,
+    payload: tour,
   };
 };
