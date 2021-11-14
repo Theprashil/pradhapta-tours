@@ -13,3 +13,14 @@ export const tourReducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
+
+export const selectedTourReducer = (state = {}, { type, payload }) => {
+  switch (type) {
+    case ActionTypes.SELECTED_TOUR:
+      return { ...state, ...payload };
+    case ActionTypes.REMOVE_SELECTED_TOUR:
+      return {};
+    default:
+      return state;
+  }
+};

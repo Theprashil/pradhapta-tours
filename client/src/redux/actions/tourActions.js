@@ -13,3 +13,9 @@ export const selectedTour = (tour) => {
     payload: tour,
   };
 };
+
+export const removeSelectedTour = (tour) => {
+  return {
+    type: ActionTypes.REMOVE_SELECTED_TOUR,
+  };
+};

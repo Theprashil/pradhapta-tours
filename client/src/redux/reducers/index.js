@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-import { tourReducer } from "./tourReducer";
+import { tourReducer, selectedTourReducer } from "./tourReducer";
 const rootReducer = combineReducers({
   allTours: tourReducer,
+  tour: selectedTourReducer,
 });
 
 export default rootReducer;
