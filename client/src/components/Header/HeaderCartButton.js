@@ -1,11 +1,13 @@
 import classes from "./HeaderCartButton.module.css";
 import HeaderCartIcon from "./HeaderCartIcon";
+import { useSelector } from "react-redux";
 
-function HeaderCartButton() {
+function HeaderCartButton(props) {
+  const tours = useSelector((state) => state.allTours.carts);
   return (
     <>
-      <button className={classes.btn}>
-        <span className={classes.badge}> 0 Item</span>
+      <button className={classes.btn} onClick={props.onShow}>
+        <span className={classes.badge}> {tours.length} Item</span>
         <span className={classes.icon}>
           <HeaderCartIcon />
         </span>

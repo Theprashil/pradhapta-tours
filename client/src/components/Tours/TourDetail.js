@@ -17,7 +17,6 @@ const TourDetail = () => {
   async function getTourDetail() {
     const res = await axios.get(`/tours/${tourID}`);
     dispatch(selectedTour(res.data.tour));
-    console.log(res.data.tour);
   }
 
   useEffect(() => {
