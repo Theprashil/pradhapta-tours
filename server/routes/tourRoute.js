@@ -39,6 +39,13 @@ router.post(
   authController.protect,
   authController.restrictTo('admin', 'tour-guide'),
   upload.single('imageCover'),
+  // upload.fields([
+  //   { name: 'imageCover', maxCount: 1 },
+  //   {
+  //     name: 'images',
+  //     maxCount: 1,
+  //   },
+  // ]),
   tourController.create
 );
 
@@ -46,6 +53,7 @@ router.post(
   '/update/:id',
   authController.protect,
   authController.restrictTo('admin', 'tour-guide'),
+  upload.single('images'),
   tourController.update
 );
 

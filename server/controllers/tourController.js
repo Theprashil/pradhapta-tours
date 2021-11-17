@@ -19,7 +19,9 @@ exports.create = catchAsync(async (req, res, next) => {
     summary: req.body.summary,
     description: req.body.description,
     imageCover: img,
-    // images: req.body.images,
+    stops: req.body.stops,
+    location: req.body.location,
+    images: req.file.path,
     startDates: req.body.startDates,
   });
 
@@ -31,10 +33,16 @@ exports.create = catchAsync(async (req, res, next) => {
 
 //2 Update tour
 exports.update = catchAsync(async (req, res, next) => {
-  const result = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const img = `${req.protocol}://${req.get('host')}/${req.file.path}`;
+
+  const result = await Tour.findByIdAndUpdate(
+    req.params.id,
+    { images: img }, // should change to req.body after i figure out multer
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   if (!result) return next(err);
 

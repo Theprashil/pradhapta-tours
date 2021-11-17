@@ -51,7 +51,7 @@ const tourSchema = mongoose.Schema(
     },
     images: [String],
     startDates: {
-      type: Date,
+      type: String,
       required: [true, 'A tour must have start dates'],
     },
     location: {
