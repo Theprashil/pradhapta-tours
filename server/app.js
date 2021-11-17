@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 
 const app = express();
 
@@ -47,6 +48,9 @@ app.use(
     whitelist: ['duration'], //will add more later on
   })
 );
+
+app.use(cors());
+app.use('/uploads', express.static('uploads'));
 
 //Routes
 app.use('/api/tours', tourRoute);

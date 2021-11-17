@@ -7,7 +7,21 @@ const err = new AppError('Cannot find the tour with given id', 404);
 
 // 1 Create tour
 exports.create = catchAsync(async (req, res, next) => {
-  const result = await Tour.create(req.body);
+  const img = `${req.protocol}://${req.get('host')}/${req.file.path}`;
+  const result = await Tour.create({
+    name: req.body.name,
+    duration: req.body.duration,
+    maxGroupSize: req.body.maxGroupSize,
+    difficulty: req.body.difficulty,
+    ratingsAverage: req.body.ratingsAverage,
+    ratingsQuantity: req.body.ratingsQuantity,
+    price: req.body.price,
+    summary: req.body.summary,
+    description: req.body.description,
+    imageCover: img,
+    // images: req.body.images,
+    startDates: req.body.startDates,
+  });
 
   res.status(201).json({
     status: 'success',

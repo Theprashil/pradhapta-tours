@@ -31,7 +31,10 @@ const tourSchema = mongoose.Schema(
       type: Number,
       required: [true, 'A tour must include its price'],
     },
-    priceDiscount: Number,
+    stops: {
+      type: Number,
+      required: [true, 'A tour must have no of stops'],
+    },
     summary: {
       type: String,
       trim: true,
@@ -40,13 +43,21 @@ const tourSchema = mongoose.Schema(
     description: {
       type: String,
       trim: true,
+      required: [true, 'A tour must have its description'],
     },
     imageCover: {
       type: String,
       required: [true, 'A tour must have cover image'],
     },
     images: [String],
-    startDates: [Date],
+    startDates: {
+      type: Date,
+      required: [true, 'A tour must have start dates'],
+    },
+    location: {
+      type: String,
+      required: [true, 'A tour must have its location'],
+    },
   },
   {
     timestamps: true,
