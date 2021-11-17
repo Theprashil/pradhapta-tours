@@ -1,28 +1,18 @@
-import React, { useState } from "react";
-import "./App.css";
-import Header from "./components/Header/Header";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import TourListing from "./components/Tours/TourListing";
-import TourDetail from "./components/Tours/TourDetail";
-import Cart from "./components/Cart/Cart";
+import Cart from "./pages/Cart.jsx";
+import Home from "./pages/Home.jsx";
+import Tour from "./pages/Tour.jsx";
+import AllTours from "./pages/AllTours.jsx";
 
 function App() {
-  const [cartIsShown, setCartIsShown] = useState(false);
-
-  const showCartHandler = () => {
-    setCartIsShown(true);
-  };
-  const hideCartHandler = () => {
-    setCartIsShown(false);
-  };
-
   return (
     <Router>
-      {cartIsShown && <Cart onClose={hideCartHandler} />}
-      <Header onShow={showCartHandler} />
       <Routes>
-        <Route path="/" exact element={<TourListing />} />
-        <Route path="/tour/:tourID" exact element={<TourDetail />} />
+        <Route path="/" exact element={<Home />} />
+        <Route path="/carts" exact element={<Cart />} />
+        <Route path="/tours" exact element={<AllTours />} />
+        <Route path="/tour/:tourID" exact element={<Tour />} />
         <Route> 404 Not Found </Route>
       </Routes>
     </Router>
