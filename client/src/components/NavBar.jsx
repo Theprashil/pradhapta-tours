@@ -51,7 +51,11 @@ function NavBar() {
         </Left>
         <Center></Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
+          <MenuItem>
+          <Link to="/signup" style={{ color: "inherit", textDecoration: "inherit" }}>
+          REGISTER
+          </Link>
+          </MenuItem>
           <MenuItem>SIGN IN</MenuItem>
           <MenuItem>
             <Link

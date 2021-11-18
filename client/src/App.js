@@ -4,6 +4,7 @@ import Cart from "./pages/Cart.jsx";
 import Home from "./pages/Home.jsx";
 import Tour from "./pages/Tour.jsx";
 import AllTours from "./pages/AllTours.jsx";
+import SignUp from "./pages/SignUp.jsx";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Route path="/carts" exact element={<Cart />} />
         <Route path="/tours" exact element={<AllTours />} />
         <Route path="/tour/:tourID" exact element={<Tour />} />
-        <Route> 404 Not Found </Route>
+        <Route path="/signup" exact element={<SignUp />} />
+        <Route path="*"> 404 Not Found </Route>
       </Routes>
     </Router>
   );
