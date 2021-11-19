@@ -12,6 +12,7 @@ const app = express();
 //my imports
 const tourRoute = require('./routes/tourRoute');
 const userRoute = require('./routes/userRoute');
+const paymentRoute = require('./routes/paymentRoute');
 const globalErrorHandler = require('./controllers/errorController');
 
 //Middlewares
@@ -49,12 +50,18 @@ app.use(
   })
 );
 
-app.use(cors());
+const corOptions = {
+  origin: ['http://localhost:3000'],
+  credentials: true,
+};
+
+app.use(cors(corOptions));
 app.use('/uploads', express.static('uploads'));
 
 //Routes
 app.use('/api/tours', tourRoute);
 app.use('/api/users', userRoute);
+app.use('/api/', paymentRoute);
 
 app.use(globalErrorHandler);
 module.exports = app;
