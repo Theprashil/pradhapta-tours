@@ -4,8 +4,16 @@ import Footer from "../components/Footer";
 import styled from "styled-components";
 import { Add, Remove } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, removeFromCart } from "../redux/actions/tourActions";
+import {
+  addToCart,
+  clearCart,
+  removeFromCart,
+} from "../redux/actions/tourActions";
 import { Link } from "react-router-dom";
+import StripeCheckout from "react-stripe-checkout";
+import axios from "../api/axios";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div``;
 
@@ -131,12 +139,41 @@ const Button = styled.button`
 `;
 
 function Cart() {
+  const [stripeToken, setStripeToken] = useState(null);
+  let navigate = useNavigate();
+
   const carts = useSelector((state) => state.allTours.carts);
   const dispatch = useDispatch();
   let total_price = 0;
   for (let i = 0; i < carts.length; i++) {
     total_price += carts[i].quantity * carts[i].payload.price;
   }
+  const fromEuroToCent = (amount) => amount * 100;
+  const KEY =
+    "pk_test_51Jx6k1Hykzx5TwTuy9Cv10wJqA8P4WXdOvU55GCbRK15iqHiJu6zwH93OW3EELeXd03538j2GkOcjZBbCeloLIZV00eeeZDebD";
+
+  const onToken = (token) => {
+    console.log(token);
+    setStripeToken(token);
+  };
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        await axios.post("/payment", {
+          tokenId: stripeToken.id,
+          amount: total_price * 100,
+        });
+        dispatch(clearCart());
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    stripeToken && makeRequest();
+    // eslint-disable-next-line
+  }, [stripeToken]);
+
   return (
     <div>
       <Container>
@@ -156,7 +193,7 @@ function Cart() {
             <Info>
               {carts.map(({ payload, quantity }) => (
                 <div key={payload._id}>
-                  <Product >
+                  <Product>
                     <ProductDetail>
                       <Details>
                         <TourItem>
@@ -204,7 +241,15 @@ function Cart() {
                 <SummaryItemText>Total</SummaryItemText>
                 <SummaryItemPrice>$ {total_price}</SummaryItemPrice>
               </SummaryItem>
-              <Button>CHECKOUT NOW</Button>
+              <StripeCheckout
+                name="Pradhapta Tours"
+                billingAddress
+                amount={fromEuroToCent(total_price)}
+                token={onToken}
+                stripeKey={KEY}
+              >
+                <Button>CHECKOUT NOW</Button>
+              </StripeCheckout>
             </Summary>
           </Bottom>
         </Wrapper>
