@@ -30,7 +30,7 @@ Try the application live at https://pradhapta-tours.netlify.app/
 
 ## Preview
 
-![pradhapta-preview](./server/public/pradhapta-preview.png)
+![pradhapta-preview](./client/public/pradhapta-preview.png)
 
 ## TODO
 
