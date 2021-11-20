@@ -16,6 +16,13 @@ const paymentRoute = require('./routes/paymentRoute');
 const globalErrorHandler = require('./controllers/errorController');
 
 //Middlewares
+const corOptions = {
+  // origin: ['http://localhost:3000', 'https://pradhapta-tours.netlify.app/'],
+  origin: '*',
+  credentials: true,
+};
+
+app.use(cors(corOptions));
 
 //sets security headers
 app.use(helmet());
@@ -50,12 +57,6 @@ app.use(
   })
 );
 
-const corOptions = {
-  origin: ['http://localhost:3000'],
-  credentials: true,
-};
-
-app.use(cors(corOptions));
 app.use('/uploads', express.static('uploads'));
 
 //Routes

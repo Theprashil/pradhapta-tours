@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:3500/api",
+  baseURL: "https://pradhapta-tours.herokuapp.com/api",
 });

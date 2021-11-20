@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Container = styled.div`
   height: 60vh;
   background-color: rgb(88, 111, 124);
-  background-image: url("http://localhost:3500/uploads/footer.png");
+  background-image: url("https://pradhapta-tours.herokuapp.com/uploads/footer.png");
   object-fit: cover;
   background-position: top;
   /* background-color: #3e505a; */

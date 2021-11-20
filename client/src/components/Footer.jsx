@@ -87,7 +87,6 @@ const Footer = () => {
           <MailOutline style={{ marginRight: "10px" }} />{" "}
           contact@pradhaptatours.com
         </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
       </Right>
     </Container>
   );
