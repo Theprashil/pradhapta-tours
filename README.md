@@ -2,10 +2,6 @@
 
 Pradhapta Tours is a full stack web application built using React.js,Redux and Node.js/Express.
 
-## Live Demo
-
-Try the application live at https://pradhapta-tours.netlify.app/
-
 ## API Docs
 
 You can use the REST API to create calls to get the data you need
